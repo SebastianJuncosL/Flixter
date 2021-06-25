@@ -16,7 +16,6 @@ import com.example.flixter.models.Movie;
 import org.parceler.Parcels;
 
 public class MovieDeatilsActivity extends AppCompatActivity {
-    Context context;
     Movie movie;
 
     TextView tvTitle;
@@ -30,17 +29,17 @@ public class MovieDeatilsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_deatils);
 
-        tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvOverview = (TextView) findViewById(R.id.tvOverview);
-        rbVoteAverage = (RatingBar) findViewById(R.id.rbVoteAverage);
-        Log.d("CreatedView", "only poster path is missing");
-        //if(context.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
-        //    posterPath = movie.getBackdropPath();
-        //} else {
-        //    posterPath = movie.getPosterPath();
-        //}
-
+        tvTitle = findViewById(R.id.tvTitle);
+        tvOverview = findViewById(R.id.tvOverview);
+        rbVoteAverage = findViewById(R.id.rbVoteAverage);
+        ivPoster = findViewById(R.id.ivPoster);
         movie = (Movie) Parcels.unwrap(getIntent().getParcelableExtra(Movie.class.getSimpleName()));
+        if(this.getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE){
+           posterPath = movie.getBackdropPath();
+        } else {
+            posterPath = movie.getPosterPath();
+        }
+
         Log.d("MovieDetailsActivity", String.format("Showing details for %s", movie.getTitle()));
 
         tvTitle.setText(movie.getTitle());
@@ -48,6 +47,7 @@ public class MovieDeatilsActivity extends AppCompatActivity {
 
         float voteAverage = movie.getVoteAverage().floatValue();
         rbVoteAverage.setRating(voteAverage/2.0f);
-        // Glide.with(context).load(posterPath).into(ivPoster);
+        Log.d("Posterpath: ", posterPath);
+        Glide.with(this).load(posterPath).into(ivPoster);
     }
 }
